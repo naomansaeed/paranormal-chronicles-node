@@ -1,0 +1,37 @@
+# 📦 Dependencies & Lockfiles
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# 🔐 Environment Variables & Secrets
+.env
+.env.local
+.env.production
+.env.example
+
+# 💻 OS & Editor Artifacts
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 📁 Build/Temp Outputs (for future asset processing)
+dist/
+build/
+temp/
+*.tmp
+
+# 🗃️ Database/Storage (if you add SQLite/JSON dumps later)
+*.sqlite
+*.db
+data-backup/
+
+# 🚫 Never Commit These
+secrets/
+keys/
+*.pem
