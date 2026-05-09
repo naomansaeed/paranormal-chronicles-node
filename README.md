@@ -17,3 +17,16 @@ A structured learning project for mastering core Node.js fundamentals by buildin
 - **No Express:** Pure vanilla architecture for deep runtime familiarity
 
 ## 📂 Directory Structure
+
+├── public/ # Static assets (HTML, CSS, JS, images)
+│ ├── index.html
+│ ├── css/
+│ └── js/
+├── src/
+│ ├── server.js # HTTP entry point & routing logic
+│ ├── routes/ # Route handlers (static, api, sse)
+│ ├── utils/ # MIME resolver, input sanitizer, event bus
+│ └── data/ # Mock/JSON encounter storage
+├── .env # Local environment variables (gitignored)
+├── .gitignore
+└── package.json

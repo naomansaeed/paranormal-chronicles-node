@@ -8,7 +8,7 @@ pnpm-lock.yaml
 .env
 .env.local
 .env.production
-.env.example
+!.env.example
 
 # 💻 OS & Editor Artifacts
 .DS_Store
