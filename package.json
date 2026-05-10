@@ -6,14 +6,14 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/naomansaeed/paranormal-chronicles-node.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Naoman Saeed",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/naomansaeed/paranormal-chronicles-node/issues"
