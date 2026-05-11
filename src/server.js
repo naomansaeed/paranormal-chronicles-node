@@ -36,6 +36,20 @@ const server = http.createServer((req,res) => {
             res.end(data);
         })
     }
+    
+    //This code will run if app.js is called.
+    else if (req.url === '/js/app.js') {
+        fs.readFile('./public/js/app.js', (err, data) => {
+            if (err) {
+                res.statusCode = 404;
+                res.end('Script not found.');
+                return;
+            }
+            res.setHeader('Content-Type', 'application/javascript');
+            res.end(data);
+        })
+    }
+
     // otherwise, give 'not found' error.
     else {
         res.statusCode = 404;
