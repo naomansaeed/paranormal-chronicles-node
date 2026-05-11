@@ -24,6 +24,18 @@ const server = http.createServer((req,res) => {
             res.end(data);
     });
     } 
+    // This code will run When CSS file is requested
+    else if (req.url === '/css/style.css') {
+        fs.readFile('./public/css/style.css', (err, data) => {
+            if (err) {
+                res.statusCode = 404;
+                res.end('CSS not found');
+                return;
+            }
+            res.setHeader('Content-Type', 'text/css');
+            res.end(data);
+        })
+    }
     // otherwise, give 'not found' error.
     else {
         res.statusCode = 404;
