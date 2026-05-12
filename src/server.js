@@ -1,5 +1,6 @@
 import http from 'node:http';
 import fs from 'node:fs';
+import path from 'node:path';
 
 const PORT = 3187;
 
@@ -30,7 +31,15 @@ const server = http.createServer((req, res) => {
     } else {
         //res.statusCode = 404;
         //res.end('File Not Found.')
-        fs.readFile('./public' + req.url, (err, data) => {
+        const filePath = req.url.split('?')[0];
+        const absolutePath = path.resolve('./public' + filePath);
+        const publicDir = path.resolve('./public');
+        if (!absolutePath.startsWith(publicDir)) {
+            res.statusCode = 403;
+            res.end('Forbidden');
+            return;
+        }
+        fs.readFile(absolutePath, (err, data) => {
             if(err){
                 res.statusCode = 404;
                 res.end('File Not Found.');
