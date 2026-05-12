@@ -27,8 +27,18 @@ const server = http.createServer((req, res) => {
             res.end(data);
         });
     } else {
-        res.statusCode = 404;
-        res.end('File Not Found.')
+        //res.statusCode = 404;
+        //res.end('File Not Found.')
+        fs.readFile('./public' + req.url, (err, data) => {
+            if(err){
+                res.statusCode = 404;
+                res.end('File Not Found.');
+                return;
+            }
+            res.statusCode = 200;
+            res.setHeader('Content-Type', getMimeType(req.url));
+            res.end(data);
+        })
     }
 });
 
