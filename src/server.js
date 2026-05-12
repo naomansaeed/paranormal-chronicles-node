@@ -5,7 +5,8 @@ const PORT = 3187;
 
 const server = http.createServer((req, res) => {
     const getMimeType = (urlPath) => {
-        const ext = urlPath.split('.').pop().toLowerCase();
+        const cleanPath = urlPath.split('?')[0];
+        const ext = cleanPath.split('.').pop().toLowerCase();
         if (ext === 'css') {
             return 'text/css';
         }
