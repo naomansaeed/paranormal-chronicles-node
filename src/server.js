@@ -67,6 +67,8 @@ const server = http.createServer((req, res) => {
     //res.setHeader('Content-Type', getMimeType(rawPath));
     res.setHeader('Content-Type', getMimeType(filePath));
 
+    res.setHeader('Cache-Control', 'public, max-age=31536000'); // ← 1 year cache for static assets
+
     // 6. STREAM the file to the client
     // createReadStream() opens the file and reads it in small chunks
     // .pipe(res) automatically writes those chunks to the HTTP response
