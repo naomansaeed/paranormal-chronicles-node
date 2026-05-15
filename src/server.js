@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { json } from 'node:stream/consumers';
 import { error } from 'node:console';
+import { chronicles } from './data/chronicles.js';
 
 //Declaring the port at the start as a constant. It is not to be changed in the subsequent code.
 const PORT = 3187;
@@ -55,10 +56,10 @@ const server = http.createServer((req, res) => {
     // Implementing mock api call 
     if (req.url === '/api/chronicles' && req.method === 'GET') {
         // creating mock data for now
-        const chronicles = [
+    /*    const chronicles = [
             { id: 1, location: 'Salem, MA', year: 1692, type: 'witchcraft' },
             { id: 2, location: 'Point Pleasant, WV', year: 1966, type: 'cryptid' }
-        ];
+        ]; */
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(chronicles));
         return;
