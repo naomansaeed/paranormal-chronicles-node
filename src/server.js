@@ -1,6 +1,7 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
+import { json } from 'node:stream/consumers';
 
 //Declaring the port at the start as a constant. It is not to be changed in the subsequent code.
 const PORT = 3187;
@@ -40,20 +41,32 @@ const PUBLIC_DIR = path.resolve('./public');
 
 const server = http.createServer((req, res) => {
     
-    // 1. Extracting raw path and strip query parameters
+    // Extracting raw path and strip query parameters
     const rawPath = req.url.split('?')[0];
 
-    // 2. Determining which file to serve
+    // Determining which file to serve
     // If user requests '/' or '/index.html', serve the homepage
     // The symbol '||' is called a disjunction or 'OR' operator. used for either/or
     const isHomepage = rawPath === '/' || rawPath === '/index.html';
     // This is a 'ternary' operator by the way.        👇
     const filePath = isHomepage ? './public/index.html' : `./public${rawPath}`;
 
-    // 3. Converting to absolute path for reliable security checking
+    // Implementing mock api call 
+    if (req.url === '/api/chronicles' && req.method === 'GET') {
+        // creating mock data for now
+        const chronicles = [
+            { id: 1, location: 'Salem, MA', year: 1692, type: 'witchcraft' },
+            { id: 2, location: 'Point Pleasant, WV', year: 1966, type: 'cryptid' }
+        ];
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(chronicles));
+        return;
+    }
+
+    // Converting to absolute path for reliable security checking
     const absolutePath = path.resolve(filePath);
 
-    // 4. SECURITY: Ensuring the requested file lives INSIDE ./public
+    // SECURITY: Ensuring the requested file lives INSIDE ./public
     // Prevents ../../etc/passwd directory traversal attacks
     if (!absolutePath.startsWith(PUBLIC_DIR)) {
         res.statusCode = 403;
@@ -61,7 +74,7 @@ const server = http.createServer((req, res) => {
         return; // Stoping execution so no file is ever read
     }
 
-    // 5. Preparing response headers
+    // Preparing response headers
     res.statusCode = 200;
     //following line resulted in index.html downloading instead of rendering
     //res.setHeader('Content-Type', getMimeType(rawPath));
@@ -69,13 +82,13 @@ const server = http.createServer((req, res) => {
 
     res.setHeader('Cache-Control', 'public, max-age=31536000'); // ← 1 year cache for static assets
 
-    // 6. STREAM the file to the client
+    // STREAM the file to the client
     // createReadStream() opens the file and reads it in small chunks
     // .pipe(res) automatically writes those chunks to the HTTP response
     const stream = fs.createReadStream(absolutePath);
     stream.pipe(res);
 
-    // 7. Handle stream errors (e.g., file deleted, permission denied, not found)
+    // Handle stream errors (e.g., file deleted, permission denied, not found)
     stream.on('error', (err) => {
         if (err.code === 'ENOENT') {
             res.statusCode = 404;
