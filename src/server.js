@@ -2,6 +2,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { json } from 'node:stream/consumers';
+import { error } from 'node:console';
 
 //Declaring the port at the start as a constant. It is not to be changed in the subsequent code.
 const PORT = 3187;
@@ -60,6 +61,18 @@ const server = http.createServer((req, res) => {
         ];
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(chronicles));
+        return;
+    }
+
+    else if (req.url === '/api/chronicles') {
+        // Route exists but method is not allowed
+        res.statusCode = 405;
+        res.setHeader('Allow', 'GET');
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({
+            error: 'Method Not Allowed',
+            allowed: ['GET']
+        }));
         return;
     }
 
