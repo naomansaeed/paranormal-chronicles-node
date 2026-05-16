@@ -65,7 +65,29 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    else if (req.url === '/api/chronicles') {
+    else if (req.url === '/api/chronicles' && req.method === 'POST') {
+        let body = ''; // 1. Buffer variable to hold the incoming data chunks
+
+        // 2. Listens for incoming chunks of data
+        req.on ('data', chunk => {
+            body += chunk; // Appends each chunk to our buffer
+        });
+
+        // 3. Listens for the 'end' event (when all data is received)
+        req.on('end', () => {
+            console.log('📥 Raw Body Received:', body); // Temporary: Log to verify we got it
+
+            // 4. Sends a response back to the client so it doesn't hang
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({
+                status: 'Data received, parsing next...'
+            }));
+        });
+        return; // Stops execution
+    }
+
+ /*   else if (req.url === '/api/chronicles') {
         // Route exists but method is not allowed
         res.statusCode = 405;
         res.setHeader('Allow', 'GET');
@@ -75,7 +97,7 @@ const server = http.createServer((req, res) => {
             allowed: ['GET']
         }));
         return;
-    }
+    } */
 
     // Converting to absolute path for reliable security checking
     const absolutePath = path.resolve(filePath);
