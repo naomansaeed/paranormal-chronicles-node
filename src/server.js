@@ -75,14 +75,41 @@ const server = http.createServer((req, res) => {
 
         // 3. Listens for the 'end' event (when all data is received)
         req.on('end', () => {
-            console.log('📥 Raw Body Received:', body); // Temporary: Log to verify we got it
+            try {
+                // 1. Parses incoming JSON string → JavaScript object
+                const newChronicle = JSON.parse(body);
+
+                // 2. Store it in memory in an array (note: resets on server restart!)
+                chronicles.push(newChronicle);
+
+                // 3. Set HTTP response code: 201 = "Created" (REST convention)
+                res.statusCode = 201;
+
+                // 4. Declare response format
+                res.setHeader('Content-Type', 'application/json');
+
+                // 5. Send JSON response with confirmation + generated ID
+                res.end(JSON.stringify({
+                    message: 'Chronicle Saved.',
+                    id: newChronicle.id || Date.now() // fallback if no ID provided
+                }))
+            } catch (error) {
+                // 6. Handle invalid JSON gracefully
+                res.statusCode = 400;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify({
+                    message: 'Invalid JSON',
+                    details: error.message // helpful for debugging
+                }))
+            }
+           /* console.log('📥 Raw Body Received:', body); // Temporary: Log to verify we got it
 
             // 4. Sends a response back to the client so it doesn't hang
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({
                 status: 'Data received, parsing next...'
-            }));
+            })); */
         });
         return; // Stops execution
     }
