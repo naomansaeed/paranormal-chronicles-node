@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/naomansaeed/paranormal-chronicles-node/issues"
   },
-  "homepage": "https://github.com/naomansaeed/paranormal-chronicles-node#readme"
+  "homepage": "https://github.com/naomansaeed/paranormal-chronicles-node#readme",
+  "dependencies": {
+    "sanitize-html": "^2.17.4"
+  }
 }

@@ -4,6 +4,7 @@ import path from 'node:path';
 import { json } from 'node:stream/consumers';
 import { error } from 'node:console';
 import { chronicles } from './data/chronicles.js';
+import sanitizeHtml from 'sanitize-html';
 
 //Declaring the port at the start as a constant. It is not to be changed in the subsequent code.
 const PORT = 3187;
@@ -86,6 +87,11 @@ const server = http.createServer((req, res) => {
                 if (!newChronicle.description || typeof newChronicle.description !== 'string'|| newChronicle.description.trim() === '') {
                     throw new Error('Description is required and must be a Non empty string.');
                 }
+
+                newChronicle.description = sanitizeHtml (newChronicle.description, {
+                    allowedTags: [],
+                    allowedAttributes: {}
+                });
 
                 // 2. Store it in memory in an array (note: resets on server restart!)
                 chronicles.push(newChronicle);
