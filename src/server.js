@@ -79,6 +79,14 @@ const server = http.createServer((req, res) => {
                 // 1. Parses incoming JSON string → JavaScript object
                 const newChronicle = JSON.parse(body);
 
+                //1.5 confirms valid data is enetered in the required fields
+                if (!newChronicle.title || typeof newChronicle.title !== 'string' || newChronicle.title.trim() === '') {
+                    throw new Error('Title is required and must be a non empty string.');
+                }
+                if (!newChronicle.description || typeof newChronicle.description !== 'string'|| newChronicle.description.trim() === '') {
+                    throw new Error('Description is required and must be a Non empty string.');
+                }
+
                 // 2. Store it in memory in an array (note: resets on server restart!)
                 chronicles.push(newChronicle);
 
