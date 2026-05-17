@@ -5,6 +5,7 @@ import { json } from 'node:stream/consumers';
 import { error } from 'node:console';
 import { chronicles } from './data/chronicles.js';
 import sanitizeHtml from 'sanitize-html';
+import { randomUUID } from 'node:crypto';
 
 //Declaring the port at the start as a constant. It is not to be changed in the subsequent code.
 const PORT = 3187;
@@ -79,6 +80,8 @@ const server = http.createServer((req, res) => {
             try {
                 // 1. Parses incoming JSON string → JavaScript object
                 const newChronicle = JSON.parse(body);
+
+                newChronicle.id = newChronicle.id || randomUUID();
 
                 //1.5 confirms valid data is enetered in the required fields
                 if (!newChronicle.title || typeof newChronicle.title !== 'string' || newChronicle.title.trim() === '') {
